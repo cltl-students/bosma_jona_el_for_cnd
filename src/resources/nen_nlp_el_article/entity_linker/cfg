@@ -1,0 +1,24 @@
+{
+  "incl_prior":true,
+  "entity_vector_length":96,
+  "n_sents":1427,
+  "labels_discard":[
+    "CARDINAL",
+    "DATE",
+    "EVENT",
+    "FAC",
+    "GPE",
+    "LANGUAGE",
+    "LAW",
+    "LOC",
+    "MONEY",
+    "ORDINAL",
+    "PERCENT",
+    "PERSON",
+    "PRODUCT",
+    "QUANTITY",
+    "TIME",
+    "WORK_OF_ART"
+  ],
+  "entity_width":96
+}

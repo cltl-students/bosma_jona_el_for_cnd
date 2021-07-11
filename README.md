@@ -1,52 +1,65 @@
-# sample-thesis-project
-This repository is an example for the structure and content that a CLTL thesis project may have. 
+This repository contains the code for the master thesis titled 'Entity Linking for Company Name Disambiguation', written by Jona B. Bosman, as part of the Linguistics master Text Mining.
 
-# Overview
-This repository assumes a Python project, with an Open License (MIT style). If any of these aspects are different from your project please make sure to change those accordingly.
-Please feel free to clone/fork this repository and use it as a template for your thesis.
+Company names can be ambiguous: some companies have the same name and some companies go by several different names. The thesis proposes an Entity Linking system to disambiguate company names in Dutch news articles and link them to unique identifiers in a Knowledge Base.
 
-# Project structure
+The project was executed during an internship at [Brainial: Smart Tendering](https://brainial.com/). For additional information about the files described in this `README`, read the full thesis that included in the main directory of this repository: `entity_linking_for_company_name_disambiguation_2021.pdf`.
 
-```
-thesis-project
-└───data
-│       │   sample_data.csv 
-└───results
-│       │   sample_results.png 
-└───src
-│   └───utils
-│       │   plotting.py
-│   │   main.py
-│   .gitignore
-│   LICENSE
-│   README.md
-│   requirements.tx
-```
+## Data
+The data consists of Dutch news articles and a database of Dutch companies. All datafiles can be found in the data directory with a separate `README.md` that explains the structure of the directory. 
 
-# To Do
-Once you start, please go through the following steps to tailor this template to your project
+## How to run the project
+To install all requirements to run the code for the project, run the following line in the terminal:\
+`pip install -r requirements.txt`\
+All code that was used in this project is included in the `src` directory.
 
-## Thesis report
-You may decide to upload your report here directly, or to simply add a reference to where the report is hosted (e.g. Overleaf)
-- [ ] Add a reference to the thesis report
+### These scripts were run in this is the order to train the system and obtain the results reported in the thesis:
 
-## Data 
-To ensure reproducibility, Yu need to provide the data your project uses.
-- [ ] Add your data in the data folder
+To execute all scripts in the correct order, execute `python main.py`.
 
-Sometimes, sharing sharing data is not straightforward. For example, there may be restrictions regarding with whom or how you can share the data you have. Some other times, the data you are using is open and easily accessible from other sites, in which case you might want to point directly to the original source. Either way, if this is the case for you please 
-- [ ] Add the data folder to ``.gitignore`` in order to avoid commiting these files to Github. For this you can simply uncomment the last line in the ``.gitignore`` file  
-```
-# Tailored ignored files
-data/*
-```
-- [ ] Make sure to add a ``README.md`` file inside the data folder, where you explain in detail how to obtain and structure the data
+`preprocessing.py` --> Preprocesses the datasets'.
 
-## README
-- [ ] Add instructions on how to set up the project, how to run your code and what to expect as an output.
+`initial_kb.py` --> Creates an initial Knowledge Base with entity information and candidates for each company mention.
 
+`annotation_preprocessing.py` --> Reforms the annotated data in the desired format and splits it into training, test and development data.
 
+`iaa.py` --> Computes Inter-Annotator Agreement and the Cohen's Kappa on the data that was annotated by both annotators.
 
+`probs_kb.py` --> Computes prior probabilities from the data and adds them to the Knowledge Base.
 
+`training.py` --> Trains the system on the training data.
 
+`evaluation.py` --> Evaluates the trained system and baselines on the test data.
+
+`error_analysis.py` --> Performs an error_analysis on the system's output on the test data.
+
+### This script was run to obtain the data from Brainial
+`datascraper.py` --> Scrapes the news article and company data from Brainial using Elastic Search.
+
+### These scripts were run in this order to prepare the data for annotation and run the Prodigy scripts to start annotating:
+`data_preparation.py` --> Transforms the data in the right format to be annotated in Prodigy.
+
+`iaa_annotations.py` --> Selects samples to be annotated by both annotators in order to compute Inter-Annotator Agreement and Cohen's Kappa, and transforms it in the right format to be annotated in Prodigy.
+
+`prodigy_mult_cand.py` --> Starts the Prodigy environment for annotation for all data to be annotated.
+
+`prodigy_iaa.py` --> Starts the Prodigy environment for annotation for the samples to be annotated by both annotators.
+
+### This script was run to obtain statistics about the data:
+`data_statistics.py` --> Computes and visualizes a number of statistics on the dataset.
+
+## Resources
+The `resources` directory contains the files that were, in addition to the data, needed to create and train the system. 
+
+`kb_initial` --> The Knowledge Base containing all mentions in the data with their candidates, and all entities with their SBI-code descriptions.
+
+`kb_probs` --> The updated Knowledge Base, now also containing the prior probabilities for each mention-entity pair that was included in the training data.
+
+`nen_nlp` --> The NLP-object that is needed access the pipeline of spaCy, and trained to contain the Entity Linking system. This version of the NLP-object was custom trained by Brainial.
+
+`nen_el_sentence` --> The NLP-object containing the Entity Linking system, trained on just the sentences of the mentions as context.
+
+`nen_el_article` --> The NLP-object containing the Entity Linking system, trained on the full articles of the mentions as context.
+
+## Results
+The `results` directory holds two files that contain the results of the trained system on the evaluation set: `results.png` and `results.tsv`.
 
